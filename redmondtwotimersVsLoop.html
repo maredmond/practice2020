@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<!--<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    -->
+<!--This is an HTML comment. -->
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Timers by Dr Redmond</title>
+
+    <!-- external CSS style file and JavaScript file -->
+
+     <style type="text/css">
+
+          body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: white;  }
+
+h1 {
+    color: red;
+}
+    
+/* section with id="content" */
+#content {
+    width: 800px;   /* was 450 */
+    margin: 5px auto;
+    padding: 5px 20px;
+    /*background: #009444;  *//* was white */
+    /*border: thin dashed purple; */ } /* was thin solid black */
+    
+
+    
+/* labels in the section with id="mainform" */
+#mainform label {
+    display: block;
+    width: 12em;
+    text-align: right; /* was right */
+    padding-right: 1em;
+    float: left; }  
+    
+/* inputs in the section with id="mainform" */
+#mainform input {
+    display: block;
+    float: left; }
+    
+/* line breaks in the section with id="mainform" */
+#mainform br {
+    clear: left; }
+
+
+
+   
+
+
+
+/* inputs in the section with id="buttons" */
+#buttons input {
+    display: block;
+    float: left;
+    font-size:medium;
+    font-weight: normal;
+    width: 5em;
+    color: #000000; 
+
+}
+
+        </style>
+
+     
+    
+    <script type="text/javascript">
+
+        // made global so that can be accessed from stop button   
+        var timeToStopTimer; // one time timer that stops action and scores for both teams 
+        var positionTimer;  // repeated timer that moves the smiley face around 
+
+        // made global so can be accessed by both the page load and the go back button
+        var origWorldLeft = 0;
+        var origWorldTop = 0; 
+
+        //var tempCnt = 0;
+
+
+        // does the same thing as the end of the one time timer
+        function btnStop_onclick() {
+            stopItNowPlease();
+        }
+
+        function btnGoBack_onclick() {
+            // put the image back to where it originally was
+            document.getElementById("worldimage").style.left = origWorldLeft;
+            document.getElementById("worldimage").style.top = origWorldTop;
+            // make sure not still moving
+            clearTimeout(timeToStopTimer);  
+            clearInterval(positionTimer); 
+
+        }
+
+
+        function btnGo_onclick() {
+            //alert("got timers started here");
+            // first make sure we don't have multiple copies running
+            clearTimeout(timeToStopTimer);
+            clearInterval(positionTimer); 
+            timeToStopTimer = setTimeout(stopItNowPlease, 10000);
+            positionTimer = setInterval(moveIt, 100); 
+        }
+
+
+        // demonstrates that looping just doesn't give the same effect
+        function btnGoLoop_onclick() {
+            var cnt = 1;
+            // calls same function that timer does, same number of times
+            for (cnt = 1; cnt <= 100; cnt++) {
+                moveIt();  // moves the object
+            }
+
+        }
+
+        
+        ///  
+        function stopItNowPlease() {
+            // first stop the relevant timers 
+            clearTimeout(timeToStopTimer); // in case this was done by button rather than timer going off
+            clearInterval(positionTimer);
+
+            // in this simple case, no other action is needed
+            alert("stopping");
+            //alert("" + tempCnt);
+        }
+
+                
+        /// for this simple example amount to move is built in  
+        function moveIt() {
+            var horizChange = 10;
+            var vertChange = 5;
+            // find out where the world is
+            var worldLeft = parseFloat(document.getElementById("worldimage").offsetLeft);
+            var worldTop = parseFloat(document.getElementById("worldimage").offsetTop);
+            worldLeft += horizChange;
+            worldTop += vertChange;
+            document.getElementById("worldimage").style.left = worldLeft + "px";
+            document.getElementById("worldimage").style.top = worldTop + "px";
+            //tempCnt++;
+        }
+
+
+
+        /* runs when the page is being loaded */
+        window.onload = function () {
+            origWorldLeft = document.getElementById("worldimage").style.left;
+            origWorldTop = document.getElementById("worldimage").style.top;
+        }
+
+
+
+        </script>
+</head>
+
+<body id="everything" style="background-color:#FDFAF7">
+<!-- a <section> is just a section (division) of a web page. By giving it a name (id) 
+    we can refer to it, say for formatting -->
+
+<section id="content">
+    <h1>Moving Object For A While With Two Timers by Dr Redmond  </h1>
+    <p>Click on button to start </p>
+    <section id="mainform">
+        
+        <section id="formControls">
+             
+                <section id="buttons"><label>&nbsp</label><input type="button" id="btnGo" value="Go" onclick="return btnGo_onclick()" />
+            <input type="button" id="btnStop" value="Stop" onclick="return btnStop_onclick()" />
+                     <input type="button" id="btnGoBack" value="Go Back" onclick="return btnGoBack_onclick()" /> 
+                    <input id="Button1" type="button" value="Loop" onclick="return btnGoLoop_onclick()"/>
+
+                </section><br /> 
+
+            </section>
+        <label>&nbsp</label><br />
+
+        
+            
+            </section>
+        
+
+<img id="worldimage"  src="world.gif" alt="world image will be shown here" style="position:absolute; width:30px; left:100px; height:30px; top:100px" />
+             
+
+            <br />
+        <label>&nbsp;</label>
+        
+        <br />
+
+        <br />
+        
+
+ 
+        <br />
+        &nbsp;<label>&nbsp</label>
+    </section>
+</body>
+</html>
